@@ -1,265 +1,530 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalbimden Sana Bir Yolculuk ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Lora:ital,wght@1,400;1,700&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <style>
-        :root {
-            --rose: #a4133c;
-            --petal: #ffb3c1;
-            --night: #1a0108;
-            --paper: #fffcf2;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gül ❤️ Emre — Bizim Evrenimiz</title>
 
-        * { box-sizing: border-box; }
-        body { 
-            margin: 0; 
-            background-color: var(--night); 
-            color: var(--paper); 
-            font-family: 'Montserrat', sans-serif;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Lora:ital,wght@1,400;1,700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
 
-        /* Arkaplan Kalp Yağmuru */
-        #starfield { position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none; }
+<style>
+:root {
+    --blue: #7798ff;
+    --light: #c8dcff;
+    --purple: #ad91ff;
+    --night: #100b2e;
+    --paper: #f5f3ff;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    margin: 0;
+    background: var(--night);
+    color: white;
+    font-family: Montserrat, sans-serif;
+    overflow-x: hidden;
+}
+#stars {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+section, footer { position: relative; z-index: 1; }
 
-        /* 1. EFSANE GİRİŞ */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: linear-gradient(to bottom, rgba(26, 1, 8, 0.3), var(--night)), url('https://images.unsplash.com/photo-1516589174184-c685266d4af4?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-        }
-        .hero h1 { font-family: 'Dancing Script', cursive; font-size: 6rem; color: var(--petal); margin: 0; text-shadow: 0 0 20px rgba(255, 179, 193, 0.5); }
-        .hero p { font-family: 'Lora', serif; font-style: italic; font-size: 1.5rem; margin-top: 20px; opacity: 0.8; }
+/* ŞİFRE EKRANI */
+#lockScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background:
+        radial-gradient(circle at 20% 20%, #4940a566, transparent 40%),
+        radial-gradient(circle at 80% 80%, #8c62ff55, transparent 40%),
+        #100b2e;
+    transition: opacity .7s, visibility .7s;
+}
+#lockScreen.open {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+.lock-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 38px 28px;
+    text-align: center;
+    border-radius: 25px;
+    background: #201747ed;
+    border: 1px solid #b8c9ff66;
+    box-shadow: 0 0 55px #8878ff30;
+}
+.lock-heart {
+    font-size: 3.5rem;
+    animation: beat 1.6s infinite;
+}
+.lock-card h2 {
+    font: 2.8rem 'Dancing Script', cursive;
+    color: var(--light);
+    margin: 12px 0;
+}
+.lock-card p { line-height: 1.8; color: #e0dcff; }
+#passwordForm {
+    display: flex;
+    gap: 8px;
+    margin-top: 22px;
+}
+#passwordInput {
+    min-width: 0;
+    flex: 1;
+    padding: 13px;
+    border-radius: 10px;
+    border: 1px solid #a8baff77;
+    background: #ffffff12;
+    color: white;
+    font: inherit;
+    outline: none;
+}
+#passwordInput:focus { border-color: var(--light); }
+#passwordForm button {
+    border: 0;
+    border-radius: 10px;
+    padding: 0 16px;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+#error {
+    min-height: 22px;
+    color: #ffb8d0 !important;
+    font-size: .9rem;
+}
 
-        /* 2. ZAMANIN RUHU (SAYAÇ) */
-        .chronicle {
-            padding: 100px 20px;
-            background: white;
-            color: var(--night);
-            text-align: center;
-        }
-        .time-wrapper {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 50px;
-        }
-        .time-circle {
-            width: 150px; height: 150px;
-            border: 2px solid var(--rose);
-            border-radius: 50%;
-            display: flex; flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: 0.5s;
-        }
-        .time-circle:hover { background: var(--rose); color: white; transform: scale(1.1); }
-        .time-circle span { font-size: 2.2rem; font-weight: bold; }
+/* UÇUŞAN KALPLER */
+#hearts {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 3;
+}
+.heart {
+    position: absolute;
+    bottom: -30px;
+    color: #b8caff;
+    text-shadow: 0 0 12px #a78bfa;
+    opacity: 0;
+    animation: floatUp linear forwards;
+}
+@keyframes floatUp {
+    0% { transform: translateY(0) rotate(0); opacity: 0; }
+    15% { opacity: .6; }
+    80% { opacity: .4; }
+    100% { transform: translateY(-110vh) translateX(var(--drift)) rotate(35deg); opacity: 0; }
+}
+@keyframes beat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.13); }
+}
 
-        /* 3. PARŞÖMEN MEKTUP (DERİN ROMANTİZM) */
-        .parchment-section {
-            padding: 120px 10%;
-            background: var(--paper);
-            color: #2b2d42;
-            box-shadow: inset 0 0 100px rgba(0,0,0,0.1);
-        }
-        .mektup {
-            max-width: 850px; margin: 0 auto;
-            font-family: 'Lora', serif;
-            font-size: 1.4rem; line-height: 2.5;
-            text-align: center; font-style: italic;
-        }
-        .signature { font-family: 'Dancing Script', cursive; font-size: 3rem; margin-top: 50px; color: var(--rose); }
+/* GİRİŞ */
+.hero {
+    min-height: 100vh;
+    padding: 70px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background:
+        linear-gradient(#100b2e66, #100b2e),
+        url("https://images.unsplash.com/photo-1516589174184-c685266d4af4?auto=format&fit=crop&w=1920&q=80")
+        center/cover;
+}
+.hero h1 {
+    margin: 0;
+    font: clamp(3.3rem, 9vw, 6.5rem) 'Dancing Script', cursive;
+    color: var(--light);
+    text-shadow: 0 0 25px #a78bfa99;
+    animation: glow 3s ease-in-out infinite alternate;
+}
+@keyframes glow {
+    from { text-shadow: 0 0 12px #7798ff55; }
+    to { text-shadow: 0 0 32px #ad91ffaa; }
+}
+.hero-subtitle {
+    font: italic clamp(1.1rem, 3vw, 1.5rem) Lora, serif;
+    margin: 20px 0 10px;
+}
+.hero-text {
+    max-width: 780px;
+    font: clamp(1rem, 2.5vw, 1.2rem)/2 Lora, serif;
+    color: #e6e4ff;
+}
+.hero-label {
+    margin-top: 15px;
+    padding: 10px 18px;
+    border: 1px solid #b8caff66;
+    border-radius: 30px;
+    background: #100b2e66;
+    color: var(--light);
+}
 
-        /* 4. AŞKIMIZIN KİLOMETRE TAŞLARI */
-        .timeline {
-            padding: 100px 5%;
-            background: var(--night);
-        }
-        .milestone {
-            margin-bottom: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .milestone:nth-child(even) { flex-direction: row-reverse; }
-        .m-img { width: 45%; border-radius: 20px; filter: grayscale(30%); transition: 0.5s; box-shadow: 0 0 30px rgba(255, 179, 193, 0.2); }
-        .m-img:hover { filter: grayscale(0%); transform: scale(1.02); }
-        .m-text { width: 45%; padding: 20px; }
-        .m-text h3 { font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--petal); }
+/* ORTAK BAŞLIK */
+.heading {
+    font: clamp(2.5rem, 6vw, 4rem) 'Dancing Script', cursive;
+    color: #6252bd;
+    text-align: center;
+    margin: 0 0 20px;
+}
+.chronicle {
+    padding: 90px 20px;
+    background: linear-gradient(135deg, #f8f7ff, #e4e9ff);
+    color: #211b43;
+    text-align: center;
+}
+.time-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+.time-circle {
+    width: 140px;
+    height: 140px;
+    border: 2px solid #8a7be8;
+    border-radius: 50%;
+    background: white;
+    color: #39306e;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 30px #5144a51a;
+    transition: .3s;
+}
+.time-circle:hover {
+    transform: translateY(-6px);
+    background: linear-gradient(135deg, #7798ff, #ad91ff);
+    color: white;
+}
+.time-circle span { font-size: 2rem; font-weight: 600; }
 
-        /* 5. NEDEN SEN? (GİZLİ NOTLAR) */
-        .reasons {
-            padding: 100px 10%;
-            background: #fff; color: #333;
-            text-align: center;
-        }
-        .reason-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; margin-top: 60px;
-        }
-        .reason-card {
-            padding: 40px; background: var(--paper); border-radius: 2px;
-            border-top: 4px solid var(--rose);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
+/* MEKTUP */
+.letter {
+    padding: 100px 8%;
+    background: linear-gradient(135deg, #fff, #eeecff);
+    color: #292447;
+}
+.letter-content {
+    max-width: 850px;
+    margin: auto;
+    text-align: center;
+    font: italic clamp(1.05rem, 2.5vw, 1.3rem)/2.2 Lora, serif;
+}
+.signature {
+    margin-top: 35px;
+    color: #6252bd;
+    font: clamp(2.5rem, 5vw, 3.3rem) 'Dancing Script', cursive;
+}
 
-        /* 6. BİTMEYEN FİNAL */
-        .eternity {
-            height: 80vh;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            text-align: center; background: var(--night);
-        }
-        .heart-beat {
-            font-size: 5rem;
-            animation: heartbeat 1.5s infinite;
-            color: var(--rose);
-        }
+/* FOTOĞRAFLAR */
+.timeline {
+    padding: 90px 7%;
+    background: linear-gradient(#100b2e, #1d1546);
+}
+.milestone {
+    max-width: 1100px;
+    margin: 65px auto;
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+.milestone:nth-child(odd) { flex-direction: row-reverse; }
+.m-img {
+    width: 48%;
+    max-height: 450px;
+    object-fit: cover;
+    border-radius: 22px;
+    border: 1px solid #b8caff55;
+    box-shadow: 0 15px 40px #0005, 0 0 25px #7798ff22;
+    transition: .4s;
+}
+.m-img:hover { transform: scale(1.02); }
+.m-text { flex: 1; line-height: 1.9; color: #e4e1ff; }
+.m-text h3 {
+    font: clamp(2.2rem, 4vw, 3rem) 'Dancing Script', cursive;
+    color: var(--light);
+    margin: 0;
+}
 
-        @keyframes heartbeat {
-            0% { transform: scale(1); }
-            15% { transform: scale(1.2); }
-            30% { transform: scale(1); }
-            45% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
+/* NEDEN SEN */
+.reasons {
+    padding: 90px 8%;
+    background: linear-gradient(135deg, #f7f5ff, #e4e9ff);
+    color: #292447;
+    text-align: center;
+}
+.reason-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+    gap: 25px;
+    margin-top: 45px;
+}
+.reason-card {
+    padding: 32px 25px;
+    border-radius: 18px;
+    background: #ffffffd9;
+    border: 1px solid #8a7be833;
+    box-shadow: 0 12px 30px #5144a511;
+    transition: .3s;
+}
+.reason-card:hover { transform: translateY(-6px); }
+.reason-card h3 { color: #6252bd; }
 
-        footer { padding: 50px; text-align: center; border-top: 1px solid #333; background: #000; font-size: 0.9rem; opacity: 0.6; }
-    </style>
+/* FİNAL */
+.eternity {
+    min-height: 80vh;
+    padding: 75px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(ellipse, #302467, #100b2e 70%);
+}
+.big-heart { font-size: 5rem; animation: beat 1.5s infinite; }
+.eternity h2 {
+    font: clamp(2.8rem, 6vw, 4rem) 'Dancing Script', cursive;
+    color: var(--light);
+}
+.spotify { width: min(90%, 600px); margin: 20px auto; }
+footer {
+    padding: 25px;
+    text-align: center;
+    background: #09061d;
+    color: #c9c5ef;
+    border-top: 1px solid #b8caff22;
+}
+@media (max-width: 700px) {
+    .milestone, .milestone:nth-child(odd) { flex-direction: column; }
+    .m-img { width: 100%; max-height: 350px; }
+    .m-text { width: 100%; }
+    .time-circle { width: 120px; height: 120px; }
+    #passwordForm { flex-direction: column; }
+    #passwordForm button { padding: 13px; }
+}
+</style>
 </head>
+
 <body>
 
-    <canvas id="starfield"></canvas>
+<canvas id="stars"></canvas>
+<div id="hearts" aria-hidden="true"></div>
 
-    <section class="hero">
-        <h1 class="animate__animated animate__pulse animate__infinite">Ruhumun Eşi...</h1>
-        <p>Seninle geçen her an, bir ömre bedel.</p>
-        <div style="position:absolute; bottom:30px; animation: bounce 2s infinite;">🔽</div>
-    </section>
+<!-- ŞİFRE EKRANI -->
+<div id="lockScreen">
+    <div class="lock-card">
+        <div class="lock-heart">💜</div>
+        <h2>Sana Özel Bir Dünya</h2>
+        <p>Bu küçük evrenin kapısı yalnızca sana açılıyor.<br>
+        Şifreni gir ve hikâyemize adım at…</p>
+        <form id="passwordForm">
+            <input id="passwordInput" type="password" placeholder="Şifre" autocomplete="off" required>
+            <button type="submit">Giriş yap ✨</button>
+        </form>
+        <p id="error" aria-live="polite"></p>
+        <small style="color:#c9c5ef">İpucu: Kalpten gelen tek kelime 💫</small>
+    </div>
+</div>
 
-    <section class="chronicle">
-        <h2 style="font-family: 'Dancing Script'; font-size: 4rem; color: var(--rose);">Sonsuzluğun İlk Günleri</h2>
-        <p style="color: #666; margin-bottom: 50px;">Birlikte attığımız her adımın hesabını tuttum...</p>
-        <div class="time-wrapper">
-            <div class="time-circle"><span id="days">0</span>GÜN</div>
-            <div class="time-circle"><span id="hours">0</span>SAAT</div>
-            <div class="time-circle"><span id="mins">0</span>DAKİKA</div>
-            <div class="time-circle"><span id="secs">0</span>SANİYE</div>
+<section class="hero">
+    <h1>Ruhumun Eşi...</h1>
+    <p class="hero-subtitle">Seninle geçen her an, bir ömre bedel.</p>
+    <div class="hero-text">
+        Bazı insanlar hayatına girer ve dünya bir anda daha güzel bir yere dönüşür.
+        Sen benim en güzel tesadüfüm, huzur bulduğum liman ve her gün yeniden
+        gülümseme sebebimsin. Bazen tek bir bakışın bütün yorgunluğumu unutturuyor,
+        bir gülüşün içimdeki en karanlık köşeleri bile aydınlatıyor.
+        <br><br>
+        Seninle sıradan anlar bile unutulmaz bir hatıraya dönüşüyor.
+        Yan yana yürümek, birlikte gülmek, geleceğe dair hayaller kurmak…
+        Benim için mutluluk tam da bunların içinde saklı.
+        <br><br>
+        Eğer bu evrenin milyonlarca yıldızı varsa, her biri sana olan sevgimden
+        bir parça taşısın. Her kalp atışım sana güzel günler, huzur ve kocaman
+        bir gülümseme getirmek istesin. İyi ki yollarımız kesişmiş, iyi ki
+        hikâyemin en güzel yerinde sen varsın, Gül. 💙
+    </div>
+    <div class="hero-label">✦ Benim en güzel hikâyem: Gül ✦</div>
+</section>
+
+<section class="chronicle">
+    <h2 class="heading">Sonsuzluğun İlk Günleri</h2>
+    <p>Birlikte attığımız her adımın hesabını tuttum...</p>
+    <div class="time-wrapper">
+        <div class="time-circle"><span id="days">0</span>GÜN</div>
+        <div class="time-circle"><span id="hours">0</span>SAAT</div>
+        <div class="time-circle"><span id="mins">0</span>DAKİKA</div>
+        <div class="time-circle"><span id="secs">0</span>SANİYE</div>
+    </div>
+</section>
+
+<section class="letter">
+    <div class="letter-content">
+        Seninle tanıştığım günü düşündüğümde, hayatımın en güzel sayfalarından
+        birinin o gün açıldığını anlıyorum. Sen benim için yalnızca sevdiğim
+        insan değil; huzurum, neşem ve en güzel hayallerimin ortağısın.
+        <br><br>
+        Elini tuttuğumda dünyanın telaşını unutmak, gözlerine baktığımda
+        kendimi evimde hissetmek, birlikte küçük şeylere bile kahkahalarla
+        gülebilmek… Bunların hepsi benim için çok kıymetli.
+        <br><br>
+        Önümüzde nasıl günler olursa olsun, birbirimizi dinlemeyi, anlamayı
+        ve birbirimize güzel davranmayı hiç bırakmayalım. Birlikte biriktireceğimiz
+        anılar, bugün kurduğumuz hayallerden bile güzel olsun.
+        <div class="signature">Daima sevgimle, GÜL 💜</div>
+    </div>
+</section>
+
+<section class="timeline">
+    <h2 class="heading" style="color:var(--light)">Aşkımızın Kilometre Taşları</h2>
+    <div class="milestone">
+        <img src="ask.jpg" class="m-img" alt="Birlikte güzel bir anımız">
+        <div class="m-text">
+            <h3>O İlk An</h3>
+            <p>Her şeyin başladığı, kalbimin ilk kez böyle çarptığı o saniye.
+            Göz göze geldiğimiz o an zamanın durduğunu hissetmiştim.</p>
         </div>
-    </section>
-
-    <section class="parchment-section">
-        <div class="mektup">
-            "Seninle tanıştığım o günü düşündüğümde, hayatımın asıl o gün başladığını anlıyorum. Sen benim sadece sevdiğim kadın değil; huzurum, sığınağım ve en güzel şiirimsin. Gözlerindeki derinlikte kaybolmak, elini tuttuğumda dünyanın geri kalanını unutmak... Bunlar benim hayatımdaki en büyük lütuflar. Bu uzun ve bazen zorlu yolda, seninle omuz omuza yürümekten, seninle yaşlanma hayalleri kurmaktan asla vazgeçmeyeceğim. Kalbim, son atışına kadar sadece senin ismini fısıldayacak."
-            <div class="signature">Daima Benimsin, ELİF</div>
+    </div>
+    <div class="milestone">
+        <img src="ask2.jpg" class="m-img" alt="Birlikte bir başka güzel anımız">
+        <div class="m-text">
+            <h3>Bizim Dünyamız</h3>
+            <p>Sadece ikimizin anladığı espriler, kimsenin bilmediği küçük sırlar
+            ve tekrar tekrar hatırlayıp gülümsediğimiz anlar…
+            Seninle her yer daha sıcak, her an daha özel.</p>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section class="timeline">
-        <div class="milestone">
-            <img src="ask.jpg" class="m-img" alt="Tanışma">
-            <div class="m-text">
-                <h3>O İlk An</h3>
-                <p>Her şeyin başladığı, kalbimin ilk kez böyle çarptığı o saniye. Göz göze geldiğimiz o an zamanın durduğunu hissetmiştim.</p>
-            </div>
+<section class="reasons">
+    <h2 class="heading">Seni Özel Kılan Şeyler</h2>
+    <div class="reason-grid">
+        <div class="reason-card">
+            <h3>💜 Merhametin</h3>
+            <p>İnsanlara gösterdiğin incelik ve güzel kalbin, seni benim gözümde
+            her gün daha da özel yapıyor.</p>
         </div>
-        <div class="milestone">
-            <img src="ask2.jpg" class="m-img" alt="Gülüş">
-            <div class="m-text">
-                <h3>Bizim Dünyamız</h3>
-                <p>Sadece ikimizin anladığı espriler, kimsenin bilmediği sırlar... Seninle her yer benim evim oldu.</p>
-            </div>
+        <div class="reason-card">
+            <h3>✨ Gülüşün</h3>
+            <p>En sıradan günü bile güzelleştiren, aklıma geldikçe yüzümde
+            gülümseme oluşturan o içten gülüşün.</p>
         </div>
-    </section>
-
-    <section class="reasons">
-        <h2 style="font-family: 'Dancing Script'; font-size: 3.5rem;">Vazgeçilmezim Olmanın Birkaç Sebebi</h2>
-        <div class="reason-grid">
-            <div class="reason-card">
-                <h4 style="color:var(--rose)">Merhametin</h4>
-                <p>Sadece bana değil, tüm dünyaya olan o güzel bakışın beni sana her gün bin kez daha aşık ediyor.</p>
-            </div>
-            <div class="reason-card">
-                <h4 style="color:var(--rose)">Güvenin</h4>
-                <p>Gözlerimi kapattığımda arkamda senin olduğunu bilmenin verdiği o eşsiz huzur.</p>
-            </div>
-            <div class="reason-card">
-                <h4 style="color:var(--rose)">Ruhun</h4>
-                <p>Karanlıklarımı aydınlatan, bana her zaman doğru yolu gösteren o ışık saçan kalbin.</p>
-            </div>
+        <div class="reason-card">
+            <h3>🌙 Ruhun</h3>
+            <p>Kendin olman, hayallerin ve dünyaya kendine özgü bakışın…
+            Seni sen yapan her şey çok kıymetli.</p>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section class="eternity">
-        <div class="heart-beat">❤️</div>
-        <h2 style="font-family: 'Dancing Script'; font-size: 4rem; color: var(--petal);">Sonsuza Kadar...</h2>
-        <div style="max-width: 600px; margin: 40px auto; width: 90%;">
-             <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/6SC4qbndnocVgl55HFxDH4?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        </div>
-        <p style="font-style: italic; opacity: 0.7;">"Sen benim bitmeyecek en güzel hikayemsin."</p>
-    </section>
+<section class="eternity">
+    <div class="big-heart">💙</div>
+    <h2>Sonsuza Kadar...</h2>
+    <div class="spotify">
+        <iframe title="Spotify müzik çalar"
+            src="https://open.spotify.com/embed/track/5NkPLrPN854wRjLqfSqfVm?utm_source=generator"
+            width="100%" height="352" style="border-radius:12px"
+            frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"></iframe>
+    </div>
+    <p style="font-style:italic">“Sen benim bitmeyecek en güzel hikâyemsin.”</p>
+</section>
 
-    <footer>
-        <p>© 2026 - ELİF ❤️ EMRE | Aşkla Hazırlandı</p>
-    </footer>
+<footer>
+    <p>© 2026 — GÜL ❤️ EMRE | Aşkla Hazırlandı</p>
+</footer>
 
-    <script>
-        // Yıldız/Kalp Efekti
-        const canvas = document.getElementById('starfield');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+<script>
+// Şifre: ömrüm
+document.getElementById('passwordForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const entered = document.getElementById('passwordInput').value.trim().toLocaleLowerCase('tr-TR');
+    if (entered === 'ömrüm') {
+        document.getElementById('lockScreen').classList.add('open');
+        document.getElementById('error').textContent = '';
+    } else {
+        document.getElementById('error').textContent = 'Şifre yanlış, tekrar dene 💫';
+        document.getElementById('passwordInput').value = '';
+    }
+});
 
-        function Star() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 2;
-            this.opacity = Math.random();
-            this.fade = Math.random() * 0.02;
-        }
+// Ufak uçuşan kalpler
+const heartLayer = document.getElementById('hearts');
+const heartTypes = ['♡', '♥', 'ღ'];
+function createHeart() {
+    const heart = document.createElement('span');
+    heart.className = 'heart';
+    heart.textContent = heartTypes[Math.floor(Math.random() * heartTypes.length)];
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.fontSize = (10 + Math.random() * 13) + 'px';
+    heart.style.animationDuration = (9 + Math.random() * 8) + 's';
+    heart.style.setProperty('--drift', (Math.random() * 100 - 50) + 'px');
+    heartLayer.appendChild(heart);
+    heart.addEventListener('animationend', () => heart.remove());
+}
+for (let i = 0; i < 12; i++) setTimeout(createHeart, i * 500);
+setInterval(createHeart, 900);
 
-        let stars = Array.from({length: 150}, () => new Star());
+// Yıldızlı arka plan
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let stars = [];
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    stars = Array.from({length: Math.min(180, Math.floor(window.innerWidth / 7))}, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.7 + .3,
+        a: Math.random(),
+        d: Math.random() * .012 + .003
+    }));
+}
+function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+        s.a += s.d;
+        if (s.a > 1 || s.a < .1) s.d = -s.d;
+        ctx.fillStyle = `rgba(185,213,255,${s.a})`;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+drawStars();
 
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(s => {
-                s.opacity += s.fade;
-                if (s.opacity > 1 || s.opacity < 0) s.fade = -s.fade;
-                ctx.fillStyle = `rgba(255, 179, 193, ${s.opacity})`;
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                ctx.fill();
-            });
-            requestAnimationFrame(draw);
-        }
-        draw();
-
-        // Sayaç (Tarihi Buradan Değiştir)
-        const start = new Date("2025-05-29T00:00:00"); 
-
-        function update() {
-            const now = new Date();
-            const diff = now - start;
-            document.getElementById('days').innerText = Math.floor(diff / 86400000);
-            document.getElementById('hours').innerText = Math.floor((diff / 3600000) % 24);
-            document.getElementById('mins').innerText = Math.floor((diff / 60000) % 60);
-            document.getElementById('secs').innerText = Math.floor((diff / 1000) % 60);
-        }
-        setInterval(update, 1000);
-        update();
-    </script>
+// Sayaç başlangıcı: 24.06.2026
+const startDate = new Date(2026, 5, 24, 0, 0, 0);
+function updateCounter() {
+    const diff = Math.max(0, Date.now() - startDate.getTime());
+    document.getElementById('days').textContent = Math.floor(diff / 86400000);
+    document.getElementById('hours').textContent = Math.floor(diff / 3600000) % 24;
+    document.getElementById('mins').textContent = Math.floor(diff / 60000) % 60;
+    document.getElementById('secs').textContent = Math.floor(diff / 1000) % 60;
+}
+setInterval(updateCounter, 1000);
+updateCounter();
+</script>
 </body>
 </html>
-
